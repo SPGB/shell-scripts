@@ -10,5 +10,4 @@ Allow scripts to execute:
 
 Add to path:
 
-`echo "export PATH=$PATH:~/shell-scripts" >> ~/.zshrc`
-`source ~/.zshrc`
+`echo "export PATH=$PATH:~/shell-scripts" >> ~/.zshrc && source ~/.zshrc`
