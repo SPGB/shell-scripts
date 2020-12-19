@@ -1,0 +1,53 @@
+#!/bin/bash
+# Youtub Download
+# Downloads the HD Video and audio sources and combines them
+
+# EG youtube-download.sh https://www.youtube.com/watch\?v\=mi6ktNpIYGw 's01e06 EVERFLOW DUN DUN.webm'
+# Argument 1: video url
+# Argument 2: Final file url
+
+# Vars
+URL=$1
+DEFAULTOUTPUT='output.webm'
+OUTPUT=${2:-$DEFAULTOUTPUT}
+FORMATVIDEO=$(youtube-dlc -F $URL | grep vp9 | tail -n 1)
+FROMATVIDEO_NUMBER=$(echo $FORMATVIDEO | awk '{print $1}')
+FORMATAUDIO=251
+
+# Clean up
+[ -f "video.webm" ] && rm video.webm
+[ -f "audio.webm" ] && rm audio.webm
+
+echo "Formats: $FORMATS"
+
+echo "Downloading video - $FORMATVIDEO"
+if [ -n "$FROMATVIDEO_NUMBER" ] && [ "$FROMATVIDEO_NUMBER" -eq "$FROMATVIDEO_NUMBER" ] 2>/dev/null; then
+  echo "Video format: $FROMATVIDEO_NUMBER"
+else
+  echo "Video format $FROMATVIDEO_NUMBER is not a number"
+  exit
+fi
+youtube-dlc -f $FROMATVIDEO_NUMBER $URL -o video.webm
+
+echo "Downloading audio - $FORMATAUDIO"
+youtube-dlc -f $FORMATAUDIO $URL -o audio.webm
+
+# Check video exists
+if [ ! -f "video.webm" ]; then
+    echo "ERROR! video.webm does not exist."
+    exit
+fi
+
+# Check audio exists
+if [ ! -f "audio.webm" ]; then
+    echo "ERROR! audio.webm does not exist."
+    exit
+fi
+
+echo '(2/3) combining files'
+ffmpeg -loglevel warning -hide_banner -i video.webm -i audio.webm -c copy "$OUTPUT"
+
+echo '(3/3) Cleaning up files'
+rm video.webm audio.webm
+
+echo 'Done!'

@@ -1,0 +1,18 @@
+#!/bin/bash
+# Shortcut for adding a magnet url to deluge-console
+
+MAGNET=$1
+
+if [[ $MAGNET != *"magnet:"* ]]; then
+  echo "Invalid magnet url"
+  exit
+fi
+
+# Deluge-console
+if command -v deluge-console &> /dev/null
+then
+    echo "Adding magnet url to deluge"
+    deluge-console add "$MAGNET"
+fi
+
+# Extend to other clients here

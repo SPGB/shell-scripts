@@ -1,0 +1,15 @@
+#!/bin/bash
+# A better deluge-console info
+
+bold=$(tput bold)
+green=$(tput setaf 2)
+reset=$(tput sgr0)
+
+# Deluge-console
+if ! command -v deluge-console &> /dev/null
+then
+    echo "deluge-console not installed"
+    exit
+fi
+
+deluge-console info --sort-reverse=file_progress --state=Downloading | grep -v -E "Seed time:|Seeds:|Tracker status:|ID:" | sed -r "s/Name: (.+)/$bold$green\1$reset/g"

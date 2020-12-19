@@ -1,0 +1,12 @@
+#!/bin/bash
+# Upscales a video into vp9
+
+# Argument 1: video url
+URL=$1
+DEFAULTOUTPUT='output.webm'
+OUTPUT=${2:-$DEFAULTOUTPUT}
+
+ffmpeg -hide_banner -y -i "$URL" -c:v libvpx-vp9 -crf 30 -b:v 1000k -pass 1 -an -f null /dev/null && \
+ffmpeg -hide_banner -y -i "$URL" -c:v libvpx-vp9 -c:a libopus -crf 30 -pass 2 -b:v 1000K "$OUTPUT"
+
+rm ffmpeg2pass-0.log

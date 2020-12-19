@@ -1,0 +1,19 @@
+#!/bin/bash
+# Downloads a web url and attempts to extract a magnet url
+
+URL=$1
+if [[ -z "$URL" ]]; then
+    echo "Error(1): URL not found"
+    exit
+fi
+
+echo "Downloading $URL"
+
+MAGNET=$(curl -s "$URL" | grep -aom 1 "\"magnet:\?.*announce\"")
+
+if [[ -z "$MAGNET" ]]; then
+    echo "Error(2): Magnet url not found"
+    exit
+fi
+
+magnet "$MAGNET"
