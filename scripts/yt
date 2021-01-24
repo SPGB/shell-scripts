@@ -27,27 +27,6 @@ else
   echo "Video format $FROMATVIDEO_NUMBER is not a number"
   exit
 fi
-youtube-dlc -f $FROMATVIDEO_NUMBER $URL -o video.webm
-
-echo "Downloading audio - $FORMATAUDIO"
-youtube-dlc -f $FORMATAUDIO $URL -o audio.webm
-
-# Check video exists
-if [ ! -f "video.webm" ]; then
-    echo "ERROR! video.webm does not exist."
-    exit
-fi
-
-# Check audio exists
-if [ ! -f "audio.webm" ]; then
-    echo "ERROR! audio.webm does not exist."
-    exit
-fi
-
-echo '(2/3) combining files'
-ffmpeg -loglevel warning -hide_banner -i video.webm -i audio.webm -c copy "$OUTPUT"
-
-echo '(3/3) Cleaning up files'
-rm video.webm audio.webm
+youtube-dlc -f $FROMATVIDEO_NUMBER+$FORMATAUDIO $URL -o "$OUTPUT"
 
 echo 'Done!'

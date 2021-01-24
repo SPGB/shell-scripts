@@ -1,0 +1,22 @@
+#!/bin/bash
+# Combines two videos into one
+
+VID1=$1
+VID2=$2
+DEFAULTOUTPUT='output.mp4'
+OUTPUT=${3:-$DEFAULTOUTPUT}
+
+touch ./splicelist.txt
+
+echo "file $VID1" >>  ./splicelist.txt
+echo "file $VID2" >>  ./splicelist.txt
+
+cat ./splicelist.txt
+
+# Combine
+ffmpeg -hide_banner -y -f concat -safe 0 -i ./splicelist.txt -c copy "$OUTPUT"
+
+# Clean up
+rm ./splicelist.txt
+
+echo "Done combining into $OUTPUT"
