@@ -25,7 +25,7 @@ OUTPUT=${2:-$DEFAULTOUTPUT}
 
 # 1 pass
 # ref: https://write.corbpie.com/mp4-to-vp9-webm-encoding-with-ffmpeg/
-ffpb -hide_banner -y -i "$URL" -c:v libvpx-vp9 -cpu-used 2 -crf 28 -b:v 1500k \
+ffpb -hide_banner -y -i "$URL" -c:v libvpx-vp9 -cpu-used 2 -crf 28 -b:v 2M \
 -threads 8 -row-mt 1 -frame-parallel 1 -tile-columns 6 \
 -c:a libopus -ac 2 -b:a 192k \
 "$OUTPUT"
